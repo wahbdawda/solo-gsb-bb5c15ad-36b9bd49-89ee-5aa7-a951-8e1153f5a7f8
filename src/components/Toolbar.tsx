@@ -15,6 +15,7 @@ interface Props {
   onReset: () => void;
   onPrefixPolicy: () => void;
   onAddressAudit: () => void;
+  onRouteSummary: () => void;
 }
 
 export default function Toolbar(props: Props) {
@@ -59,6 +60,13 @@ export default function Toolbar(props: Props) {
           title="粘贴多行「ISO 时间, IPv4, MAC, 有效秒数」观测，审计同 IP 不同 MAC 的有效区间重叠（只读，不修改规划）"
         >
           地址观测冲突审计
+        </button>
+        <button
+          className="btn"
+          onClick={props.onRouteSummary}
+          title="勾选子网并限定最多路由条数，以 CIDR 树生成不跨根网段、不覆盖未选分配的最优汇总方案（只读，不修改规划）"
+        >
+          路由汇总
         </button>
         <span className="divider" />
         <button className="btn" onClick={props.onExport}>

@@ -88,6 +88,17 @@ describe('包含与重叠', () => {
     expect(overlaps(parseCidr('10.0.0.0/25')!, parseCidr('10.0.0.128/25')!)).toBe(false);
     expect(overlaps(parseCidr('10.0.0.0/24')!, parseCidr('10.0.1.0/24')!)).toBe(false);
   });
+
+  it('contains/overlaps 的 /0 与地址空间末址边界（2^32 容量不得 uint32 截断）', () => {
+    const whole = parseCidr('0.0.0.0/0')!;
+    expect(contains(whole, parseCidr('255.255.255.255/32')!)).toBe(true);
+    expect(contains(whole, parseCidr('128.0.0.0/1')!)).toBe(true);
+    expect(overlaps(whole, parseCidr('255.255.255.255/32')!)).toBe(true);
+    // 跨越 255.255.255.255 的相邻块仍正确判定
+    const top = parseCidr('255.255.255.0/24')!;
+    expect(contains(top, parseCidr('255.255.255.255/32')!)).toBe(true);
+    expect(contains(top, parseCidr('255.255.254.0/24')!)).toBe(false);
+  });
 });
 
 describe('扣除与伙伴合并', () => {

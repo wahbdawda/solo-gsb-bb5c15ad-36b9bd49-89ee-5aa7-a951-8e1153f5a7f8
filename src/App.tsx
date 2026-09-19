@@ -34,6 +34,7 @@ import NewAllocationForm from './components/NewAllocationForm';
 import MigrationModal from './components/MigrationModal';
 import PrefixPolicyModal from './components/PrefixPolicyModal';
 import AddressAuditModal from './components/AddressAuditModal';
+import RouteSummaryModal from './components/RouteSummaryModal';
 import ConflictModal from './components/ConflictModal';
 import CryptoBackupModal from './components/CryptoBackupModal';
 import BatchApplyModal from './components/BatchApplyModal';
@@ -80,6 +81,7 @@ export default function App() {
   const [resizeTarget, setResizeTarget] = useState<Allocation | null>(null);
   const [prefixPolicyOpen, setPrefixPolicyOpen] = useState(false);
   const [addressAuditOpen, setAddressAuditOpen] = useState(false);
+  const [routeSummaryOpen, setRouteSummaryOpen] = useState(false);
   const [backupExportOpen, setBackupExportOpen] = useState(false);
   const [backupImport, setBackupImport] = useState<{ name: string; text: string } | null>(null);
   const [batchOpen, setBatchOpen] = useState(false);
@@ -504,6 +506,7 @@ export default function App() {
         onReset={resetPlan}
         onPrefixPolicy={() => setPrefixPolicyOpen(true)}
         onAddressAudit={() => setAddressAuditOpen(true)}
+        onRouteSummary={() => setRouteSummaryOpen(true)}
       />
 
       {toast && (
@@ -597,6 +600,10 @@ export default function App() {
 
       {addressAuditOpen && (
         <AddressAuditModal plan={plan} onClose={() => setAddressAuditOpen(false)} />
+      )}
+
+      {routeSummaryOpen && (
+        <RouteSummaryModal plan={plan} onClose={() => setRouteSummaryOpen(false)} />
       )}
 
       {backupExportOpen && (

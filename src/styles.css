@@ -617,6 +617,90 @@ tr.policy-permit td {
   color: #a8c4ff;
 }
 
+/* ---- 路由汇总 ---- */
+.summary-modal {
+  width: 900px;
+}
+
+.summary-select-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--text);
+}
+
+.summary-cap {
+  display: flex;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.summary-cap input {
+  padding: 5px 8px;
+}
+
+.summary-pick-wrap {
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.summary-pick-wrap table {
+  font-size: 12.5px;
+}
+
+.summary-pick-wrap td {
+  padding: 5px 10px;
+}
+
+tr.summary-root-row td {
+  background: var(--panel-2);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+tr.summary-picked td {
+  background: rgba(52, 201, 142, 0.06);
+}
+
+tr.summary-reserved-row td {
+  opacity: 0.75;
+}
+
+.summary-check-col {
+  width: 30px;
+  text-align: center;
+}
+
+.summary-cidr {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.summary-covered {
+  white-space: normal;
+  min-width: 220px;
+}
+
+.summary-covered-item {
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.summary-num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.summary-infeasible {
+  color: var(--red);
+  font-weight: 600;
+}
+
 /* ---- 提示条 ---- */
 .toast {
   position: fixed;

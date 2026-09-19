@@ -72,6 +72,7 @@ export function broadcastOf(c: Cidr): number {
   return (c.base + blockSize(c.prefix) - 1) >>> 0;
 }
 
+/** 块内最后一个地址（可能为 2^32−1，故不做 uint32 截断） */
 export function lastAddr(c: Cidr): number {
   return c.base + blockSize(c.prefix) - 1;
 }
@@ -98,15 +99,17 @@ export function prefixForHosts(hosts: number): number {
 }
 
 export function contains(parent: Cidr, child: Cidr): boolean {
+  // 用基址+容量比较：对 /0（容量 2^32）同样成立，避免末址 uint32 截断。
   return (
     child.prefix >= parent.prefix &&
     child.base >= parent.base &&
-    lastAddr(child) <= lastAddr(parent)
+    child.base + blockSize(child.prefix) <= parent.base + blockSize(parent.prefix)
   );
 }
 
 export function overlaps(a: Cidr, b: Cidr): boolean {
-  return a.base <= lastAddr(b) && b.base <= lastAddr(a);
+  // 半开区间 [base, base+size) 相交判定；用容量而非末址，避免 /0（容量 2^32）uint32 截断。
+  return a.base < b.base + blockSize(b.prefix) && b.base < a.base + blockSize(a.prefix);
 }
 
 export function alignUp(addr: number, prefix: number): number {
