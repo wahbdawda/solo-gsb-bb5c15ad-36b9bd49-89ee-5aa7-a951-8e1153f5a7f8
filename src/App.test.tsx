@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { createElement } from 'react';
 import App from './App';
 import BatchApplyModal from './components/BatchApplyModal';
+import RouteSummaryModal from './components/RouteSummaryModal';
 import StaticHostsModal from './components/StaticHostsModal';
 import { Allocation, Plan } from './lib/model';
 
@@ -15,8 +16,34 @@ describe('App 冒烟测试', () => {
     expect(html).toContain('新建分配');
     expect(html).toContain('批量申请');
     expect(html).toContain('前缀策略校验');
+    expect(html).toContain('路由汇总');
     expect(html).toContain('加密导出');
     expect(html).toContain('加密导入');
+  });
+});
+
+describe('RouteSummaryModal 冒烟测试', () => {
+  const plan: Plan = {
+    version: 1,
+    roots: [{ id: 'r1', name: '办公网', cidr: '192.168.0.0/16' }],
+    allocations: [
+      { id: 'a1', name: '办公有线', kind: 'subnet', prefix: 24, cidr: '192.168.0.0/24' },
+      { id: 'a2', name: '办公无线', kind: 'subnet', prefix: 24, cidr: '192.168.4.0/24' },
+      { id: 'a3', name: '核心预留', kind: 'reserved', prefix: 24, cidr: '192.168.8.0/24' },
+    ],
+  };
+
+  it('弹窗渲染子网勾选列表（保留段不参与）', () => {
+    const html = renderToString(
+      createElement(RouteSummaryModal, { plan, onClose: () => undefined }),
+    );
+    expect(html).toContain('路由汇总');
+    expect(html).toContain('最多路由条数');
+    expect(html).toContain('办公有线');
+    expect(html).toContain('办公无线');
+    // 命名保留段不作为可勾选项
+    expect(html).not.toContain('核心预留');
+    expect(html).toContain('生成汇总方案');
   });
 });
 
